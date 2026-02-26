@@ -259,12 +259,35 @@ object-fit:cover;border-radius:14px;transition:transform 0.2s
 .carousel-container{
 position:relative;
 width:100%;
-overflow:hidden;
+overflow-y:auto;
+overflow-x:hidden;
 background:#fff;
-touch-action:none;
+touch-action:pan-y;
 user-select:none;
 border-radius:8px;
-border:1px solid #eee
+border:1px solid #eee;
+max-height:280px
+}
+
+@media(max-width:480px){
+.carousel-container{
+max-height:240px
+}
+}
+
+/* Custom scrollbar styling */
+.carousel-container::-webkit-scrollbar{
+width:4px
+}
+.carousel-container::-webkit-scrollbar-track{
+background:transparent
+}
+.carousel-container::-webkit-scrollbar-thumb{
+background:#ccc;
+border-radius:2px
+}
+.carousel-container::-webkit-scrollbar-thumb:hover{
+background:#999
 }
 .carousel{
 display:flex;
@@ -499,7 +522,7 @@ border-radius:6px;cursor:pointer;font-weight:700;font-size:14px
     </div>
 
     <button class="orders-btn" onclick="checkLoginOrders()" title="Order History">
-      <img src="img/kranjang.png" style="width:24px">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS7rskqABIWULG8V0PHGjIN1WrJ4ELT6wE8A&s" style="width:24px">
       <span id="ordersCount">0</span>
     </button>
 
@@ -508,11 +531,12 @@ border-radius:6px;cursor:pointer;font-weight:700;font-size:14px
     </button>
 
     <button class="user-btn" onclick="toggleUserMenu()" title="User">
-      👤 <span id="userDisplay">Login</span>
+       <img src="https://media.istockphoto.com/id/1332100919/id/vektor/ikon-manusia-ikon-hitam-simbol-orang.jpg?s=612x612&w=0&k=20&c=DuLvR5pRI1dJf4wkP6ezTaqw7DsVb4cNIglgDLwQo5E=">
+      <span id="userDisplay">Login</span>
     </button>
 
     <button class="cart-btn" onclick="toggleCart()">
-      <img src="img/kranjang.png">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh12XudCg7rvQ3iJW9p58VdgIbduaR-ZK5Iw&s">
       <span id="cartCount">0</span>
     </button>
   </div>
@@ -799,7 +823,7 @@ const productsB=[
 {id:4,name:'Balaclava Grey',price:80000,img:'https://media.karousell.com/media/photos/products/2026/1/16/svg_calle_1768565264_d7e34ef7_progressive.jpg',images:['https://media.karousell.com/media/photos/products/2026/1/16/svg_calle_1768565264_fc087011_progressive.jpg','https://media.karousell.com/media/photos/products/2025/12/29/svg_calle_graphic_white_tee_1767021163_b34136c4_progressive.jpg',''],desc:'New Drop'},
 {id:5,name:'T SHIRT CALLE X SNSB',price:82000,img:'https://down-id.img.susercontent.com/file/id-11134207-81zte-mf8e5jvd97ny10',images:['https://media.karousell.com/media/photos/products/2025/8/5/tshirt_snsb_x_calle_1754381239_394dd1d6_thumbnail.jpg','https://media.karousell.com/media/photos/products/2025/7/31/t_shirt_calle_x_snsb_1753963232_129a1942_progressive.jpg',''],desc:'New Drop'},
 {id:55,name:'Calle SVG',price:80000,img:'https://media.karousell.com/media/photos/products/2026/1/5/svg_calle_black_long_sleeve_ts_1767625918_a5a4cf10_progressive.jpg',images:['https://media.karousell.com/media/photos/products/2026/1/5/svg_calle_black_long_sleeve_ts_1767625918_2b5d9152_progressive.jpg','',''],desc:'New Drop'},
-{id:45,name:'Stiker CalleSbsb',price:15000,img:'img/sti.jpeg',images:['img/sti.jpeg','',''],desc:'New Drop'},
+{id:45,name:'Stiker CalleSbsb',price:15000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdYJGQBJ--2BylQ6UQ3l8DWLD-leqYN0CUkw&s',images:['','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdYJGQBJ--2BylQ6UQ3l8DWLD-leqYN0CUkw&s',''],desc:'New Drop'},
 {id:49,name:'Calle SVG red',price:80000,img:'https://media.karousell.com/media/photos/products/2025/12/12/svg_x_calle_logo_tee_1765541638_b6c11ac7_progressive.jpg',images:['https://media.karousell.com/media/photos/products/2025/12/12/svg_x_calle_logo_tee_1765541638_2c798e1c_progressive.jpg','https://media.karousell.com/media/photos/products/2025/12/12/svg_x_calle_logo_tee_1765541638_3d45cf61_progressive.jpg',''],desc:'New Drop'},
 {id:48,name:'Kaos CALLE DE LARACHE',price:80000,img:'https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b44e47387cff448b8fa10d80df1dbe7c~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=my&from=1826719393',images:['https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5a607c99f0c742a1ba2d93b14e904237~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=my&from=1826719393','',''],desc:'New Drop'},
 {id:495,name:'CALLE YESSIR BLACK',price:82000,img:'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/80db46627c0f4a00ae8c4472c53d5810~.jpeg',images:['https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/80db46627c0f4a00ae8c4472c53d5810~.jpeg','',''],desc:'New Drop'},
@@ -807,7 +831,7 @@ const productsB=[
 {id:49405,name:'TISYATS - BRA',price:81000,img:'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/9ab40bc9e6bf400f81693faf5bf808c1~.jpeg',images:['https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/9ab40bc9e6bf400f81693faf5bf808c1~.jpeg','',''],desc:'New Drop'},
 {id:49505,name:'JERSEY BRAZIL',price:155000,img:'https://down-id.img.susercontent.com/file/id-11134207-81ztk-mfjm1k08ix3gc8.webp',images:['https://down-id.img.susercontent.com/file/id-11134207-81ztk-mfjm1k08ix3gc8.webp','',''],desc:'New Drop'},
 {id:49605,name:'JERSEY CALLE',price:155000,img:'https://down-id.img.susercontent.com/file/id-11134207-81zto-mfjm1gayuuiw0a.webps',images:['https://down-id.img.susercontent.com/file/id-11134207-81zto-mfjm1gayuuiw0a.webps','',''],desc:'New Drop'},
-{id:4905,name:'calle crew',price:60000,img:'https://preloved.co.id/_ipx/w_800,f_webp,q_80,fit_cover/https://assets.preloved.co.id/products/565587/ca6a1964-3b91-4035-9214-c376a9ccaeb2.jpg',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9PhQr68BBMGEJOTauhzLxZ4FUzyHQRgYfPg&s','',''],desc:'New Drop'},
+{id:4905,name:'calle crew',price:80000,img:'https://preloved.co.id/_ipx/w_800,f_webp,q_80,fit_cover/https://assets.preloved.co.id/products/565587/ca6a1964-3b91-4035-9214-c376a9ccaeb2.jpg',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9PhQr68BBMGEJOTauhzLxZ4FUzyHQRgYfPg&s','',''],desc:'New Drop'},
 {id:4905,name:'calle snsb',price:80000,img:'https://down-id.img.susercontent.com/file/id-11134207-81ztf-mf8e5aoyvgnee2',images:['https://down-id.img.susercontent.com/file/id-11134207-81ztf-mf8e5aoyvgnee2','',''],desc:'New Drop'},
 {id:4905,name:'calle basic white',price:80000,img:'https://down-id.img.susercontent.com/file/id-11134207-82250-mjipch13buv9b3',images:['https://down-id.img.susercontent.com/file/id-11134207-82250-mjipch13buv9b3','',''],desc:'New Drop'},
 {id:4905,name:'calle black',price:80000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz9_lib9RSQs6xp1rjgeOsx6Jcia2kkcW0Rw1zzbeyPAEKEWK6',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz9_lib9RSQs6xp1rjgeOsx6Jcia2kkcW0Rw1zzbeyPAEKEWK6','',''],desc:'New Drop'},
@@ -823,7 +847,7 @@ const productsC=[
 ];
 const productsCHMB = [
   {id:49705,name:'CHMB KUNING',price:80000,img:'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTrhWZ7N6Edn8nP7rDzotIpAU0PNI-PDAVINHDBg0xcaVe-zKg7',images:['https://down-id.img.susercontent.com/file/id-11134207-8224v-mjubbnbg2fpj97','','https://down-id.img.susercontent.com/file/id-11134207-8224v-mjubbnbg2fpj97'],desc:'New Drop'},
-  {id:21, name:'CHMB PERTIWI', price:80000, img:'img/chb.png', images:['img/chb.png','',''], desc:'CHMB series B'},
+  {id:24541, name:'CHMB PERTIWI', price:80000, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUttNZq4rCjCqTkkTCHfiS0xV9gtZ6tBV8Nw&s', images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGFwV2yIRU2NOuUDzjq8AVY02cziQfFGFRYw&s','',''], desc:''},
   {id:22, name:'CHMB Exclusive', price:80000, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeIsh1PmTe4P-nCSC6bBvh9iSWqIKG46jJ22Y5HgvH_pI1dxcd', images:['img/chb.png','',''], desc:'CHMB exclusive'},
   {id:29, name:'CHMB billiard', price:80000, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3CpkJsLTXsFcY2iwyg5JPYpg_qYHj5LxVhg&s', images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3CpkJsLTXsFcY2iwyg5JPYpg_qYHj5LxVhg&s','',''], desc:'CHMB series B'},
   {id:2991, name:'CHMB expensive', price:80000, img:'data:image/webp;base64,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', images:['data:image/webp;base64,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','',''], desc:'CHMB series B'},
@@ -1498,8 +1522,55 @@ function checkoutWA(){
   alert('Pesanan berhasil dikirim ke WhatsApp!');
 }
 
+
 // Load user on page load
 loadUser();
+
+// Chat widget HTML injection
+(function(){
+  const chatHtml = `
+<div id="chatButton" onclick="toggleChat()">💬</div>
+<div id="chatWindow" class="hidden">
+  <div id="chatHeader">Chat AI <span onclick="toggleChat()" style="float:right;cursor:pointer">✖</span></div>
+  <div id="chatMessages"></div>
+  <div id="chatInputArea">
+    <input type="text" id="chatInput" placeholder="Tanyakan sesuatu...">
+    <button onclick="sendChat()">Kirim</button>
+  </div>
+</div>
+`;
+  document.body.insertAdjacentHTML('beforeend', chatHtml);
+})();
+
+// auto-chat logic
+function toggleChat(){
+  const win=document.getElementById('chatWindow');
+  win.classList.toggle('hidden');
+}
+function appendMessage(text, cls){
+  const m=document.createElement('div');
+  m.className=cls;
+  m.innerText=text;
+  document.getElementById('chatMessages').appendChild(m);
+  document.getElementById('chatMessages').scrollTop=document.getElementById('chatMessages').scrollHeight;
+}
+function sendChat(){
+  const inp=document.getElementById('chatInput');
+  const msg=inp.value.trim();
+  if(!msg) return;
+  appendMessage('Anda: '+msg,'chat-user');
+  inp.value='';
+  setTimeout(()=>{
+    appendMessage('AI: '+autoReply(msg),'chat-ai');
+  },500);
+}
+function autoReply(msg){
+  msg=msg.toLowerCase();
+  if(msg.includes('halo')||msg.includes('hi')) return 'Halo! Ada yang bisa saya bantu?';
+  if(msg.includes('harga')) return 'Harga dapat dilihat pada halaman produk. Mohon sebutkan produk yang dimaksud.';
+  if(msg.includes('stok')) return 'Stok akan diperbarui segera. Silakan cek kembali dalam beberapa saat.';
+  return 'Terima kasih atas pertanyaannya. Kami akan memproses dan menghubungi Anda segera.';
+}
 
 // set footer year
 try{ document.getElementById('year').innerText = new Date().getFullYear(); }catch(e){}
