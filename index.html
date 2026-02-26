@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FYRENSTORE</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#fff;color:#111}
+
+/* ================= HEADER ================= */
+header{
+position:sticky;top:0;z-index:999;
+background:#fff;border-bottom:1px solid #eee;
+padding:12px 16px;
+display:flex;justify-content:space-between;align-items:center
+}
+.header-left{display:flex;align-items:center;gap:16px}
+.store-name{font-weight:900;font-size:18px}
+
+/* KATEGORI */
+.header-right{display:flex;align-items:center;gap:14px;position:relative}
+
+.category-btn{
+font-weight:700;font-size:14px;
+cursor:pointer;padding:6px 8px;border-radius:6px
+}
+.category-btn:hover{background:#f2f2f2}
+
+.category-menu{
+position:absolute;top:38px;right:40px;
+background:#fff;border:1px solid #eee;
+border-radius:8px;overflow:hidden;
+display:none;min-width:140px
+}
+.category-menu div{
+padding:10px;font-size:14px;cursor:pointer
+}
+.category-menu div:hover{background:#f5f5f5}
+.category-menu.active{display:block}
+
+.cart-btn, .orders-btn, .user-btn{
+background:none;border:none;cursor:pointer;
+display:flex;align-items:center;gap:6px;font-weight:700
+}
+.cart-btn img, .orders-btn img, .user-btn img{width:26px}
+.cart-btn span, .orders-btn span, .user-btn span{font-weight:700}
+
+/* ================= AUTH MODAL ================= */
+.auth-modal{
+position:fixed;inset:0;background:rgba(0,0,0,0.7);
+display:none;align-items:center;justify-content:center;
+z-index:500
+}
+.auth-modal.active{display:flex}
+.auth-box{
+background:#fff;border-radius:12px;
+width:95%;max-width:400px;padding:24px
+}
+.auth-box h2{margin-top:0;text-align:center}
+.auth-form input{
+width:100%;padding:10px;margin-top:12px;
+border:1px solid #ccc;border-radius:6px;font-size:14px
+}
+.auth-form button{
+width:100%;padding:12px;margin-top:12px;
+background:#000;color:#fff;border:none;
+border-radius:6px;cursor:pointer;font-weight:700
+}
+.auth-form button:hover{background:#333}
+.auth-toggle{text-align:center;margin-top:12px;font-size:13px}
+.auth-toggle a{color:#000;cursor:pointer;text-decoration:underline}
+.close-auth{position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer}
+
+/* ================= ADMIN PANEL ================= */
+.admin-panel{
+position:fixed;inset:0;background:#fff;
+display:none;overflow:auto;z-index:450;
+padding-top:60px
+}
+.admin-panel.active{display:block}
+.admin-header{
+position:fixed;top:0;left:0;right:0;
+background:#000;color:#fff;padding:12px 16px;z-index:451;
+display:flex;justify-content:space-between;align-items:center
+}
+.admin-header h2{margin:0;font-size:18px}
+.admin-header button{background:none;border:none;color:#fff;font-size:24px;cursor:pointer}
+.admin-container{padding:20px 16px;max-width:800px;margin:0 auto}
+.product-form{border:1px solid #eee;padding:16px;border-radius:8px;margin-bottom:16px;background:#f9f9f9}
+.product-form input{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:4px;font-size:13px}
+.product-form button{background:#000;color:#fff;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;margin-top:10px}
+.product-form button:hover{background:#333}
+.product-form label{display:block;margin-top:12px;font-weight:700;font-size:13px}
+
+/* ================= ORDERS PAGE ================= */
+.orders-page{
+position:fixed;inset:0;background:#fff;
+display:none;overflow:auto;z-index:400;
+padding-top:60px
+}
+.orders-page.active{display:block}
+.orders-header{
+position:fixed;top:0;left:0;right:0;
+background:#fff;border-bottom:1px solid #eee;
+padding:12px 16px;z-index:401;
+display:flex;justify-content:space-between;align-items:center
+}
+.orders-header h3{
+margin:0;font-size:18px;flex:1
+}
+.orders-header button{
+background:none;border:none;font-size:24px;cursor:pointer;padding:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center
+}
+.orders-container{padding:20px 16px;max-width:600px;margin:0 auto}
+.order-card{
+border:1px solid #eee;border-radius:8px;
+padding:16px;margin-bottom:16px
+}
+.order-id{font-weight:700;font-size:14px;color:#666}
+.order-close-btn{
+background:#ff6b6b;color:#fff;border:none;padding:12px 24px;
+border-radius:4px;cursor:pointer;font-weight:700;font-size:14px;
+min-width:120px;min-height:40px;display:flex;align-items:center;justify-content:center;
+width:100%;margin-top:20px
+}
+.order-close-btn:hover{background:#ff5252}
+.order-date{
+font-size:12px;color:#666;margin-bottom:12px
+}
+.order-status{
+margin:8px 0;padding:12px;background:#f5f5f5;
+border-radius:6px;font-size:13px;color:#000
+}
+.order-items{font-size:13px;margin:8px 0}
+.order-items-img{
+display:flex;gap:10px;margin-bottom:12px;padding:12px;
+background:#f9f9f9;border-radius:6px
+}
+.order-item-thumb{
+width:60px;height:60px;object-fit:cover;border-radius:4px
+}
+.order-item-info{
+flex:1;display:flex;flex-direction:column;justify-content:center
+}
+.order-item-info b{font-size:13px;margin-bottom:4px}
+.order-item-info small{font-size:11px;color:#666;margin-bottom:4px}
+.order-item-info em{font-size:12px;font-style:normal;font-weight:700;color:#000}
+.order-timer{font-size:12px;color:#e74c3c;margin-top:8px}
+.order-completion-info{
+margin:10px 0;padding:12px;background:#fff3cd;
+border-radius:6px;font-size:12px;color:#856404;border:1px solid #ffc107
+}
+
+/* ================= HERO ================= */
+.hero{
+height:80vh;background:#000;overflow:hidden;
+position:relative;margin-bottom:40px
+}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero-text{
+position:absolute;bottom:30px;left:30px;
+font-size:32px;font-weight:900;color:#fff;
+z-index:10;text-shadow:2px 2px 4px rgba(0,0,0,0.5)
+}
+@media(max-width:768px){
+.hero{height:50vh}
+.hero-text{font-size:20px;bottom:20px;left:20px}
+}
+
+/* ================= PRODUCTS ================= */
+.container{display:flex;justify-content:center;padding-bottom:60px;scroll-behavior:smooth}
+.products{
+width:100%;max-width:1100px;
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:32px;padding:0 20px;
+}
+.product{text-align:center;cursor:pointer;transition:opacity 0.2s}
+.product:active{opacity:0.7}
+.product img{
+width:100%;aspect-ratio:1/1;
+object-fit:cover;border-radius:14px;transition:transform 0.2s
+}
+.product:hover img{transform:scale(1.02)}
+.product b{display:block;margin-top:12px;font-size:20px}
+.price{font-weight:700}
+
+/* ================= RESPONSIVE MOBILE ================= */
+@media(max-width:768px){
+  .products{grid-template-columns:repeat(2,1fr);gap:16px;padding:0 12px}
+  .product img{border-radius:8px}
+  .product{text-align:center;cursor:pointer;transition:transform 0.2s}
+  .product:active{transform:scale(0.95)}
+  
+  .hero{height:50vh;margin-bottom:20px}
+  .hero-text{font-size:24px;bottom:20px;left:20px}
+  
+  .modal-box{width:98%;max-width:100%}
+  .modal-inner{flex-direction:column !important}
+  .modal-img,.modal-content{width:100% !important}
+  .modal-content{padding:12px}
+  
+  .cart{max-width:100% !important;width:100%}
+  
+  .carousel-slide{min-height:300px}
+  .carousel-nav{width:40px;height:40px;font-size:20px}
+  
+  .option-group{flex-wrap:wrap}
+  .option-box{padding:6px 10px;font-size:12px}
+  
+  .checkout{padding:10px;font-size:12px}
+  
+  header{padding:10px 12px;gap:8px}
+  .store-name{font-size:16px}
+  .category-menu{right:0;top:35px;min-width:120px}
+  
+  .container{padding-bottom:30px}
+}
+
+@media(max-width:480px){
+  .products{grid-template-columns:repeat(2,1fr);gap:12px;padding:0 10px}
+  
+  .hero{height:40vh;margin-bottom:15px}
+  .hero-text{font-size:20px;bottom:15px;left:15px}
+  
+  .product b{font-size:14px;margin-top:8px}
+  .price{font-size:13px}
+  
+  .carousel-slide{min-height:250px}
+  
+  .cart-items{padding:8px}
+  .cart-item{gap:8px}
+  .cart-item img{width:50px;height:50px}
+  
+  .qty button{width:24px;height:24px;font-size:12px}
+  .qty span{font-size:12px}
+  
+  header{padding:8px 10px}
+  .store-name{font-size:14px}
+  .cart-btn span, .orders-btn span, .user-btn span{font-size:12px}
+  
+  .modal-content{padding:10px}
+  .modal-content h3{font-size:16px}
+  .modal-content p{font-size:13px}
+  
+  .auth-box{width:95%;max-width:95%;padding:16px}
+  .auth-box h2{font-size:16px}
+  
+  .orders-container{padding:12px 12px}
+  .order-card{padding:12px}
+  .order-id{font-size:12px}
+  
+  #cart input, #cart select{padding:8px;margin:4px 0;font-size:12px}
+  #cart b{font-size:12px;margin-top:8px}
+}
+
+/* ===== CAROUSEL ===== */
+.carousel-container{
+position:relative;
+width:100%;
+overflow:hidden;
+background:#fff;
+touch-action:none;
+user-select:none;
+border-radius:8px;
+border:1px solid #eee
+}
+.carousel{
+display:flex;
+transition:transform 0.3s ease-out;
+width:100%
+}
+.carousel-slide{
+flex:0 0 100%;
+width:100%;
+height:400px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#f5f5f5
+}
+.carousel-slide img{
+max-width:100%;
+max-height:100%;
+object-fit:contain
+}
+.carousel-nav{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:rgba(0,0,0,0.6);
+color:#fff;
+border:none;
+width:45px;
+height:45px;
+cursor:pointer;
+font-size:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:all 0.2s;
+z-index:10;
+border-radius:4px
+}
+.carousel-nav:hover{background:rgba(0,0,0,0.9)}
+.carousel-nav.prev{left:8px}
+.carousel-nav.next{right:8px}
+.carousel-dots{
+display:flex;
+gap:6px;
+justify-content:center;
+padding:10px 0;
+background:#fff;
+border-top:1px solid #eee
+}
+.carousel-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:#ccc;
+cursor:pointer;
+border:none;
+transition:all 0.2s
+}
+.carousel-dot:hover{background:#999}
+.carousel-dot.active{
+background:#000;
+width:24px;
+border-radius:4px
+}
+
+/* ===== THUMBNAIL ===== */
+.thumbs{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:8px;
+background:#fff;
+border-top:1px solid #eee;
+border-radius:0 0 8px 8px
+}
+.thumbs img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:4px;
+cursor:pointer;
+opacity:0.6;
+border:2px solid transparent;
+transition:all 0.2s;
+flex-shrink:0
+}
+.thumbs img:hover{
+opacity:0.9
+}
+.thumbs img.active{
+opacity:1;
+border-color:#000;
+box-shadow:0 0 0 1px #000
+}
+
+
+/* ================= MODAL ================= */
+.modal{
+position:fixed;inset:0;
+background:rgba(0,0,0,.7);
+display:none;align-items:center;justify-content:center;
+z-index:200
+}
+.modal.active{display:flex}
+.modal-box{
+background:#fff;border-radius:12px;
+width:95%;max-width:800px;overflow:hidden
+}
+.modal-inner{display:flex;flex-direction:column}
+.modal-img img{width:100%}
+.modal-content{padding:16px}
+
+@media(min-width:768px){
+.modal-inner{flex-direction:row}
+.modal-img,.modal-content{width:50%}
+}
+
+.option-group{display:flex;gap:10px;margin-bottom:10px}
+.option-box{
+border:1px solid #ccc;padding:8px 14px;
+border-radius:6px;cursor:pointer;
+transition:0.2s
+}
+.option-box:hover{opacity:0.8}
+.option-box.active{background:#000;color:#fff}
+
+/* color swatches for appearance */
+.option-box[style*="background:blue"]{border-color:blue}
+.option-box[style*="background:red"]{border-color:red}
+.option-box[style*="background:pink"]{border-color:pink}
+.option-box[style*="background:gray"]{border-color:gray}
+.option-box[style*="background:maroon"]{border-color:maroon}
+
+/* ================= CART ================= */
+.cart{
+position:fixed;top:0;right:-100%;
+width:100%;max-width:380px;height:100%;
+background:#fff;z-index:300;
+transition:.3s;border-left:1px solid #eee;
+display:flex;flex-direction:column
+}
+.cart.active{right:0}
+.cart header{background:#000;color:#fff;padding:14px}
+.cart-items{flex:1;overflow:auto;padding:10px}
+
+.cart-item{display:flex;gap:10px;margin-bottom:14px}
+.cart-item img{
+width:60px;height:60px;
+object-fit:cover;border-radius:6px
+}
+.qty{display:flex;gap:6px;margin-top:6px}
+.qty button{
+width:26px;height:26px;
+border:none;background:#000;color:#fff;cursor:pointer
+}
+.remove{background:none;border:none;color:red;font-size:12px;cursor:pointer}
+
+.checkout{
+background:#000;color:#fff;border:none;
+padding:12px;border-radius:6px;
+width:100%;margin-top:10px;cursor:pointer;font-size:13px;font-weight:700
+}
+.checkout[disabled]{opacity:0.6;cursor:not-allowed}
+
+/* Cart inputs styling */
+#cart input, #cart select{
+width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;
+border-radius:4px;font-size:13px;font-family:Arial
+}
+#cart input:focus, #cart select:focus{
+outline:none;border-color:#000;background:#fafafa
+}
+#cart hr{margin:12px 0;border:none;border-top:1px solid #eee}
+#cart b{display:block;margin-top:12px;margin-bottom:8px;font-size:14px;color:#000}
+
+.upload-box{
+border:2px dashed #000;padding:12px;
+text-align:center;margin-top:8px;font-size:12px;border-radius:4px
+}
+.upload-box input{margin:8px 0 0 0}
+
+/* ================= ADDRESS MODAL ================= */
+.address-modal{
+position:fixed;inset:0;background:rgba(0,0,0,0.7);
+display:none;align-items:center;justify-content:center;
+z-index:500
+}
+.address-modal.active{display:flex}
+.address-box{
+background:#fff;border-radius:12px;
+width:95%;max-width:450px;padding:24px;max-height:80vh;overflow-y:auto
+}
+.address-box h2{margin-top:0;text-align:center;font-size:18px}
+.address-form input, .address-form select{
+width:100%;padding:10px;margin-top:10px;
+border:1px solid #ccc;border-radius:6px;font-size:13px
+}
+.address-form label{display:block;margin-top:12px;font-weight:700;font-size:13px}
+.address-form button{
+width:100%;padding:12px;margin-top:16px;
+background:#000;color:#fff;border:none;
+border-radius:6px;cursor:pointer;font-weight:700;font-size:14px
+}
+.address-form button:hover{background:#333}
+.close-address{position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;padding:5px 10px;color:#666;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+.close-address:hover{color:#000;background:#f5f5f5;border-radius:4px}
+
+/* ================= FOOTER ================= */
+.site-footer{background:#111;color:#fff;padding:40px 20px;text-align:center}
+.site-footer h4{margin:0 0 12px;font-weight:700}
+.logos{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.logo{display:inline-flex;align-items:center;justify-content:center;width:84px;height:36px;background:#1a1a1a;border-radius:6px;color:#fff;font-weight:700}
+.copyright{margin-top:18px;color:#bbb;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="header-left">
+    <div class="store-name">FYRENSTORE</div>
+  </div>
+
+  <div class="header-right">
+    <div class="category-btn" onclick="toggleCategory()">Kategori</div>
+
+    <div class="category-menu" id="catMenu">
+      <div onclick="goCat('heroA')">snsb</div>
+      <div onclick="goCat('heroB')">CALLE</div>
+      <div onclick="goCat('heroC')">CHMB</div>
+    </div>
+
+    <button class="orders-btn" onclick="checkLoginOrders()" title="Order History">
+      <img src="img/kranjang.png" style="width:24px">
+      <span id="ordersCount">0</span>
+    </button>
+
+    <button class="orders-btn" onclick="openAdmin()" title="Kelola Produk" style="display:none;margin-left:auto" id="adminBtn">
+      ⚙️ Kelola
+    </button>
+
+    <button class="user-btn" onclick="toggleUserMenu()" title="User">
+      👤 <span id="userDisplay">Login</span>
+    </button>
+
+    <button class="cart-btn" onclick="toggleCart()">
+      <img src="img/kranjang.png">
+      <span id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= HERO A ================= -->
+<div class="hero" id="heroA">
+<img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1024,h=434,fit=crop/AVLNpXyBa6tBLQBz/20200430_141139-01-mxB8ZnownbT0Ww11.jpeg" alt="snsb">
+<div class="hero-text">snsb</div>
+</div>
+
+<div class="container">
+<div class="products" id="productsA"></div>
+</div>
+
+<!-- ================= HERO B ================= -->
+<div class="hero" id="heroB">
+<img src="https://down-id.img.susercontent.com/file/id-11134207-7ra0g-mdj8c321cix71f" alt="CALLE">
+<div class="hero-text">CALLE</div>
+</div>
+
+<div class="container">
+<div class="products" id="productsB"></div>
+</div>
+
+<!-- ================= HERO C ================= -->
+<div class="hero" id="heroC">
+<img src="https://img.ws.mms.shopee.co.id/id-11134210-7qul9-limsjwmhix2605" alt="CHMB">
+<div class="hero-text">CHMB</div>
+</div>
+
+<div class="container">
+<div class="products" id="productsC"></div>
+</div>
+
+<div class="container">
+<div class="products" id="productsCHMB"></div>
+</div>
+
+
+
+<!-- ================= MODAL ================= -->
+<div class="modal" id="detailModal">
+<div class="modal-box">
+<div class="modal-inner">
+<div class="modal-img">
+  <div class="carousel-container" id="carouselContainer">
+    <div class="carousel" id="carousel">
+      <div class="carousel-slide"><img id="slide1" src=""></div>
+      <div class="carousel-slide"><img id="slide2" src=""></div>
+      <div class="carousel-slide"><img id="slide3" src=""></div>
+    </div>
+    <button class="carousel-nav prev" onclick="prevSlide()">❮</button>
+    <button class="carousel-nav next" onclick="nextSlide()">❯</button>
+  </div>
+  <div class="carousel-dots">
+    <button class="carousel-dot active" onclick="goToSlide(0)"></button>
+    <button class="carousel-dot" onclick="goToSlide(1)"></button>
+    <button class="carousel-dot" onclick="goToSlide(2)"></button>
+  </div>
+  <div class="thumbs" id="thumbs"></div>
+</div>
+
+<div class="modal-content">
+<h3 id="dName"></h3>
+<p id="dPrice" class="price"></p>
+<p id="dDesc"></p>
+
+<b>Ukuran</b>
+<div class="option-group">
+<div class="option-box active">M</div>
+<div class="option-box">L</div>
+<div class="option-box">XL</div>
+</div>
+
+<b>Warna</b>
+<div class="option-group">
+  <div class="option-box active">Hitam</div>
+  <div class="option-box">Putih</div>
+  <div class="option-box" style="background:blue;color:#fff">Biru</div>
+  <div class="option-box" style="background:red;color:#fff">Merah</div>
+  <div class="option-box" style="background:pink;color:#000">Pink</div>
+  <div class="option-box" style="background:gray;color:#fff">Abu-abu</div>
+  <div class="option-box" style="background:maroon;color:#fff">Maron</div>
+</div>
+
+<button class="checkout" onclick="addToCart()">ADD TO CART</button>
+<button class="checkout" onclick="closeDetail()">Tutup</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ================= AUTH MODAL ================= -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-box">
+    <button class="close-auth" onclick="closeAuth()">×</button>
+    
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <h2>Login</h2>
+      <div class="auth-form">
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="handleLogin()">Login</button>
+      </div>
+      <div class="auth-toggle">
+        Belum punya akun? <a onclick="switchToRegister()">Daftar di sini</a>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none">
+      <h2>Register</h2>
+      <div class="auth-form">
+        <input type="text" id="regName" placeholder="Nama Lengkap">
+        <input type="email" id="regEmail" placeholder="Email">
+        <input type="password" id="regPassword" placeholder="Password">
+        <input type="password" id="regPassword2" placeholder="Ulangi Password">
+        <button onclick="handleRegister()">Daftar</button>
+      </div>
+      <div class="auth-toggle">
+        Sudah punya akun? <a onclick="switchToLogin()">Login di sini</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ORDERS PAGE ================= -->
+<div class="orders-page" id="ordersPage">
+  <div class="orders-header">
+    <h3>Pesanan Saya</h3>
+    <button onclick="closeOrders()">×</button>
+  </div>
+  <div class="orders-container" id="ordersContainer">
+  </div>
+</div>
+
+<!-- ================= ADMIN PANEL ================= -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h2>⚙️ Kelola Gambar Produk</h2>
+    <button onclick="closeAdmin()">×</button>
+  </div>
+  <div class="admin-container" id="adminContainer"></div>
+</div>
+
+<!-- ================= CART ================= -->
+<div class="cart" id="cart">
+<header style="display:flex;justify-content:space-between;align-items:center">
+  <span>CHECKOUT</span>
+  <button onclick="toggleCart()" style="background:none;border:none;font-size:20px;cursor:pointer">×</button>
+</header>
+<div class="cart-items" id="cartItems"></div>
+
+<div style="padding:12px;overflow-y:auto;max-height:60vh">
+<p><b>Total:</b> <span id="total">Rp 0</span></p>
+
+<hr style="margin:12px 0;border:none;border-top:1px solid #eee">
+
+<b style="display:block;margin-bottom:8px">📍 ALAMAT PENGIRIMAN</b>
+<div id="addressDisplay" style="padding:10px;background:#f5f5f5;border-radius:6px;margin-bottom:10px;font-size:12px;line-height:1.5;min-height:60px;display:none">
+  <div id="addressText" style="color:#666;margin-bottom:8px"></div>
+  <button onclick="openAddressModal()" style="width:100%;padding:8px;background:#000;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:700">✏️ Ubah Alamat</button>
+</div>
+
+<button onclick="openAddressModal()" id="addAddressBtn" style="width:100%;padding:12px;background:#000;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:13px">📍 Masukkan Alamat</button>
+
+<hr style="margin:12px 0;border:none;border-top:1px solid #eee">
+
+<b style="display:block;margin-bottom:8px">💳 PEMBAYARAN</b>
+<select id="paymentMethod" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;font-size:13px"><option>Transfer Bank
+</option><option>BCA 2891337250 MUHAMMAD ALDO WIMADA
+  </option><option>BRI 007001111261504 MARIDA
+    </option><option>DANA 089615170747 MARIDA
+     </option><option> SALDO SHOPEE 2891337250 MUHAMMAD ALDO WIMADA
+</option></select>
+
+<b style="display:block;margin:12px 0 8px 0">🚚 PENGIRIMAN</b>
+<select id="shippingMethod" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;font-size:13px"><option>JNE
+</option><option>J&T
+  </option><option>AMBIL LANGSUNG
+</option></select>
+
+<button id="checkoutBtn" class="checkout" onclick="checkoutWA()" style="margin-top:12px">Checkout WhatsApp</button>
+</div>
+</div>
+
+<!-- ================= ADDRESS MODAL ================= -->
+<div class="address-modal" id="addressModal">
+  <div class="address-box">
+    <button class="close-address" onclick="closeAddressModal()">×</button>
+    <h2>📍 Alamat Pengiriman</h2>
+    <div class="address-form">
+      <label>Nama Lengkap</label>
+      <input type="text" id="addrFullName" placeholder="Nama Lengkap">
+      
+      <label>Provinsi</label>
+      <input type="text" id="addrProvince" placeholder="Provinsi">
+      
+      <label>Kota</label>
+      <input type="text" id="addrCity" placeholder="Kota">
+      
+      <label>Kecamatan</label>
+      <input type="text" id="addrDistrict" placeholder="Kecamatan">
+      
+      <label>Kode Pos</label>
+      <input type="text" id="addrPostalCode" placeholder="Kode Pos">
+      
+      <label>Nama Jalan, Gedung</label>
+      <input type="text" id="addrStreet" placeholder="Nama Jalan, Gedung">
+      
+      <label>No. Rumah</label>
+      <input type="text" id="addrHouseNo" placeholder="No. Rumah">
+      
+      <label>Detail lainnya (Cth: blok/unit no., patokan)</label>
+      <input type="text" id="addrDetails" placeholder="Detail lainnya">
+      
+      <button onclick="saveAddressToAccount()">Simpan Alamat</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= QUEUE NOTICE (HIDDEN) ================= -->
+<!-- ================= SITE FOOTER ================= -->
+<footer class="site-footer">
+  <div>
+    <h4>Payment Method</h4>
+    <div class="logos" aria-hidden="true">
+      <div class="logo">BCA</div>
+      <div class="logo">BRI</div>
+      <div class="logo">DANA</div>
+      <div class="logo">OVO</div>
+      <div class="logo">VISA</div>
+      <div class="logo">MC</div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px">
+    <h4>Shipment Method</h4>
+    <div class="logos" aria-hidden="true">
+      <div class="logo">JNE</div>
+      <div class="logo">J&T</div>
+      <div class="logo">GOSEND</div>
+      <div class="logo">ANTERAJA</div>
+      <div class="logo">DHL</div>
+    </div>
+  </div>
+
+  <div class="copyright">&copy; <span id="year"></span> FYRENSTORE. All rights reserved.</div>
+</footer>
+<div class="modal" id="queueNotice">
+  <div class="modal-box">
+    <div style="padding:20px;text-align:center">
+      <h3>Nomor Antrian</h3>
+      <p id="queueNumber" style="font-size:28px;font-weight:900;margin:8px 0"></p>
+      <p id="queueEta" style="margin:6px 0;color:#555"></p>
+      <p id="queueCountdown" style="margin:6px 0;color:#000"></p>
+      <button class="checkout" id="queueCancel">Batal</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let allProducts=[];
+
+const productsA=[
+{id:1,name:'snsb word',price:80000,img:'https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/8dc60746468c46d6bd912feea3494bb0~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=e1be8f53&idc=my&from=1826719393',images:['https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSknf-ngREFfUYmoJdgAXqle3W3Ukk33lM-ZJXFcjvaewv4Nhnl',''],
+desc:'T-Shirt Unisex — Cotton Combed — Lembut & Adem — Jahitan Rapi — Ketebalan Standar — Untuk Pemakaian Harian'},
+{id:2,name:'snsb lion',price:210000,img:'https://sg-test-11.slatic.net/p/517255a0578bb591293fca476a55bde3.jpg',images:['https://sg-test-11.slatic.net/p/517255a0578bb591293fca476a55bde3.jpg',''],
+desc:'T-Shirt Unisex — Cotton Combed — Lembut & Adem — Jahitan Rapi — Ketebalan Standar — Untuk Pemakaian Harian'},
+{id:21,name:'snsb lion black',price:80000,img:'https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/55b30cf0e08a460d945fef0b07c2cb61~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=e1be8f53&idc=my2&from=1826719393',images:['','https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/55b30cf0e08a460d945fef0b07c2cb61~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=e1be8f53&idc=my2&from=1826719393'],
+desc:'T-Shirt Unisex — Cotton Combed — Lembut & Adem — Jahitan Rapi — Ketebalan Standar — Untuk Pemakaian Harian'},
+{id:231,name:'snsb story',price:80000,img:'https://down-id.img.susercontent.com/file/id-11134207-8224u-mgzv2uq7277zcd',images:['https://down-id.img.susercontent.com/file/id-11134207-8224u-mgzv2uq7277zcd','https://down-id.img.susercontent.com/file/id-11134207-8224u-mgzv2uq7277zcd'],
+desc:'T-Shirt Unisex — Cotton Combed — Lembut & Adem — Jahitan Rapi — Ketebalan Standar — Untuk Pemakaian Harian'},
+{id:241,name:'sNsb',price:80000,img:'https://sg-test-11.slatic.net/p/ca7107d92f26a282500c10a36911d46a.jpg',images:['https://sg-test-11.slatic.net/p/ca7107d92f26a282500c10a36911d46a.jpg',''],
+desc:'T-Shirt Unisex — Cotton Combed — Lembut & Adem — Jahitan Rapi — Ketebalan Standar — Untuk Pemakaian Harian'},
+{id:251,name:'snsb sw',price:80000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFnF4BoQosMTQK7gVzJ21PZlBRYdCyAj3XyA&s',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFnF4BoQosMTQK7gVzJ21PZlBRYdCyAj3XyA&s',''],
+desc:'T-Shirt Unisex — Cotton Combed — Lembut & Adem — Jahitan Rapi — Ketebalan Standar — Untuk Pemakaian Harian'},
+
+
+];
+const productsB=[
+{id:4,name:'Balaclava Grey',price:80000,img:'https://media.karousell.com/media/photos/products/2026/1/16/svg_calle_1768565264_d7e34ef7_progressive.jpg',images:['https://media.karousell.com/media/photos/products/2026/1/16/svg_calle_1768565264_fc087011_progressive.jpg','https://media.karousell.com/media/photos/products/2025/12/29/svg_calle_graphic_white_tee_1767021163_b34136c4_progressive.jpg',''],desc:'New Drop'},
+{id:5,name:'T SHIRT CALLE X SNSB',price:82000,img:'https://down-id.img.susercontent.com/file/id-11134207-81zte-mf8e5jvd97ny10',images:['https://media.karousell.com/media/photos/products/2025/8/5/tshirt_snsb_x_calle_1754381239_394dd1d6_thumbnail.jpg','https://media.karousell.com/media/photos/products/2025/7/31/t_shirt_calle_x_snsb_1753963232_129a1942_progressive.jpg',''],desc:'New Drop'},
+{id:55,name:'Calle SVG',price:80000,img:'https://media.karousell.com/media/photos/products/2026/1/5/svg_calle_black_long_sleeve_ts_1767625918_a5a4cf10_progressive.jpg',images:['https://media.karousell.com/media/photos/products/2026/1/5/svg_calle_black_long_sleeve_ts_1767625918_2b5d9152_progressive.jpg','',''],desc:'New Drop'},
+{id:45,name:'Stiker CalleSbsb',price:15000,img:'img/sti.jpeg',images:['img/sti.jpeg','',''],desc:'New Drop'},
+{id:49,name:'Calle SVG red',price:80000,img:'https://media.karousell.com/media/photos/products/2025/12/12/svg_x_calle_logo_tee_1765541638_b6c11ac7_progressive.jpg',images:['https://media.karousell.com/media/photos/products/2025/12/12/svg_x_calle_logo_tee_1765541638_2c798e1c_progressive.jpg','https://media.karousell.com/media/photos/products/2025/12/12/svg_x_calle_logo_tee_1765541638_3d45cf61_progressive.jpg',''],desc:'New Drop'},
+{id:48,name:'Kaos CALLE DE LARACHE',price:80000,img:'https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b44e47387cff448b8fa10d80df1dbe7c~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=my&from=1826719393',images:['https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5a607c99f0c742a1ba2d93b14e904237~tplv-aphluv4xwc-resize-jpeg:800:800.jpeg?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=607f11de&idc=my&from=1826719393','',''],desc:'New Drop'},
+{id:495,name:'CALLE YESSIR BLACK',price:82000,img:'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/80db46627c0f4a00ae8c4472c53d5810~.jpeg',images:['https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/80db46627c0f4a00ae8c4472c53d5810~.jpeg','',''],desc:'New Drop'},
+{id:485,name:'CALLE LOGO TI SYATS WHITE',price:82000,img:'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/b1794149417f4d0695b70731b10aa298~.jpeg',images:['https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/b1794149417f4d0695b70731b10aa298~.jpeg','',''],desc:'New Drop'},
+{id:49405,name:'TISYATS - BRA',price:81000,img:'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/9ab40bc9e6bf400f81693faf5bf808c1~.jpeg',images:['https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/9ab40bc9e6bf400f81693faf5bf808c1~.jpeg','',''],desc:'New Drop'},
+{id:49505,name:'JERSEY BRAZIL',price:155000,img:'https://down-id.img.susercontent.com/file/id-11134207-81ztk-mfjm1k08ix3gc8.webp',images:['https://down-id.img.susercontent.com/file/id-11134207-81ztk-mfjm1k08ix3gc8.webp','',''],desc:'New Drop'},
+{id:49605,name:'JERSEY CALLE',price:155000,img:'https://down-id.img.susercontent.com/file/id-11134207-81zto-mfjm1gayuuiw0a.webps',images:['https://down-id.img.susercontent.com/file/id-11134207-81zto-mfjm1gayuuiw0a.webps','',''],desc:'New Drop'},
+{id:4905,name:'calle crew',price:60000,img:'https://preloved.co.id/_ipx/w_800,f_webp,q_80,fit_cover/https://assets.preloved.co.id/products/565587/ca6a1964-3b91-4035-9214-c376a9ccaeb2.jpg',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9PhQr68BBMGEJOTauhzLxZ4FUzyHQRgYfPg&s','',''],desc:'New Drop'},
+{id:4905,name:'calle snsb',price:80000,img:'https://down-id.img.susercontent.com/file/id-11134207-81ztf-mf8e5aoyvgnee2',images:['https://down-id.img.susercontent.com/file/id-11134207-81ztf-mf8e5aoyvgnee2','',''],desc:'New Drop'},
+{id:4905,name:'calle basic white',price:80000,img:'https://down-id.img.susercontent.com/file/id-11134207-82250-mjipch13buv9b3',images:['https://down-id.img.susercontent.com/file/id-11134207-82250-mjipch13buv9b3','',''],desc:'New Drop'},
+{id:4905,name:'calle black',price:80000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz9_lib9RSQs6xp1rjgeOsx6Jcia2kkcW0Rw1zzbeyPAEKEWK6',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz9_lib9RSQs6xp1rjgeOsx6Jcia2kkcW0Rw1zzbeyPAEKEWK6','',''],desc:'New Drop'},
+{id:4905,name:'calle basic merah',price:80000,img:'https://down-id.img.susercontent.com/file/id-11134207-8224p-milseximmm8117',images:['shttps://down-id.img.susercontent.com/file/id-11134207-8224p-milseximmm8117','',''],desc:'New Drop'},
+{id:49045,name:'calle svg',price:80000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0jxGsJkXwCd1hCchywvoHDQP-QdM_Ftktkw&s',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0jxGsJkXwCd1hCchywvoHDQP-QdM_Ftktkw&s','',''],desc:'New Drop'},
+
+
+];
+const productsC=[
+  {id:10,name:'CHMB PENCIL',price:82000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCcPFK-v_dtHPJ70smWlWi1S6ck8r6Vna1jQ&s',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPIHPXCqDDLCHh6L55FPvAxE0JrUkWuemH7w&s','',''],desc:'C terbaru - Black'},
+  {id:11,name:'CHMB PETTERN',price:82000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVaMHv8Sw1Qwu0T1jeCsfwFW_mqyvyzcywCQ&s',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-qH8rT6gDr8MsD8gbH_CJ2CIHu_mahhldXw&s','',''],desc:'C terbaru - White'},
+  {id:12,name:'chmb bero',price:79000,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA_Ps6-mOkWjv74ULglDwOAEit3I_OuQWR_w&s',images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA_Ps6-mOkWjv74ULglDwOAEit3I_OuQWR_w&s','',''],desc:'Special edition'}
+];
+const productsCHMB = [
+  {id:49705,name:'CHMB KUNING',price:80000,img:'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTrhWZ7N6Edn8nP7rDzotIpAU0PNI-PDAVINHDBg0xcaVe-zKg7',images:['https://down-id.img.susercontent.com/file/id-11134207-8224v-mjubbnbg2fpj97','','https://down-id.img.susercontent.com/file/id-11134207-8224v-mjubbnbg2fpj97'],desc:'New Drop'},
+  {id:21, name:'CHMB PERTIWI', price:80000, img:'img/chb.png', images:['img/chb.png','',''], desc:'CHMB series B'},
+  {id:22, name:'CHMB Exclusive', price:80000, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeIsh1PmTe4P-nCSC6bBvh9iSWqIKG46jJ22Y5HgvH_pI1dxcd', images:['img/chb.png','',''], desc:'CHMB exclusive'},
+  {id:29, name:'CHMB billiard', price:80000, img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3CpkJsLTXsFcY2iwyg5JPYpg_qYHj5LxVhg&s', images:['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3CpkJsLTXsFcY2iwyg5JPYpg_qYHj5LxVhg&s','',''], desc:'CHMB series B'},
+  {id:2991, name:'CHMB expensive', price:80000, img:'data:image/webp;base64,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', images:['data:image/webp;base64,UklGRjoKAABXRUJQVlA4IC4KAACQOACdASq1AL8APj0ejEUiIaEQVNggA8S0gd2vcuBfYf6ZHyH66aBP8m+w33f8ePyt/Af27/jBxgXqj+zfk1xRAAPy3+bf3b8rP7p8q05Xvt/bvsd+U38z/z39A/cj1jv9V4wlAD+Xf0D/Vf2T+3fsb8h/+t5g/ov/ie4L/KP6J/ov7x+8v+P/////+6315/tx7H/7KiYAV4ZUw3hSDRPOOZnZAThH2eGFbeCJDO2rK5NO/+6Xj4+79RCf/Dy7QYKCBRhN3yqMFegboJu6neTRTd8euyFgU5gHJ8G5GYIFRJDL7Mvfb1slYCD4kcPk7AN9jFEoW7xq+x5wFd1zCrv7esDFAzja/kzKld0qsNSS4e7XMKKJPy/HjQO9hJZPvf16m+snovC1MPqTvZoAmK6LqLkVxPxszqKWIDO2ANAKqL5f13A1keyu6629hSF5eGGZ6/d64lS1Xsb4TjbEZ44KXxfaY+VsxjzW54LO9wBS2g3ezaB6/g8SR1ZhzPMF6IOB5VjKLHwDzth3SVAxgK78ybtN3dWMa8Xrw1I1Dd9k5xQw19YGj0DihRl9CM1k46Q6yrbYo5GbEfmFS7kbmOtHl1L1JbjwIUwQSMgNAAD+/iRsw8kI4oG1XGtgjGNiZW7CIen2fP+nz3/F7DmGxpYlVT9WtmUuv2dxUsaMKLzRdMaJgzB7T9hdYadpx4OCvCfoGCt11TN/AYvxn4WjqDI695DpkUiv/lUdTkhIYxaypPi/bavrr247etM11pHL8ZApugcXFN+a2v3lQBSnBCGc0ckCDKBwQzC8DqeoCzulmrJkdXSKMpcfNJ0z/Booy9e+BHkhv8fzWiLXU0kCovXwyyL5lLZBiPAqth1mNPqBiKRO6sCPU8Cjujt3EbGKK9XgRQeX/irgNrZ3hynXBXfhWHWygYNMrEn0lmF9kn6RQg8xuOX4y/p57pa1a9E14e1NsbTwFC2FiSLAVSSHYsFFvBfFhDd0OftOCF1PkPOu7lT96uu9pGcZYblg5D4EnZZfy34XaeiEISaRnZO2LdF1n++jrjKeOnzF91j5Hexqo6T1GjIKLMjHHrErf/LU0/kk7g6KyJ8xA9O7F5zIoFyHJxbRMBY4cmQefit8neb1tbjxDoMXGAAmOo0hJMhQIABsyBEAkcryilOMW+B/+41oZPlykTnM+7FTU4yloiDzfY0miGolMN58gpOD8T+XEZzi8VB6J/yIUDuS+e0Ft/HWfHIA37rJ7s1/HZTIErHpZUZ/mLToBFX/0341MtCJRMw8FiYtiK7qSPemiXU4BEgv1o0IVNmqoujbqVOR87ErsLijQPZMlQ2sr921fAtZqL3CTn/83CGdPj1K/wwU3pSRkmzDPeAhDOTm8wZhfBMjHpdossNmjAeV7ELkMGCIyNFhH2AKBLApc9tN6NWyPd36y5v/ooyxpl0xs/Zid9GchQiM3cUK1+mInlk4Gd1aenSDJZqyyZmAysQt5KR5WvIWrw0qMChRpOaeIUY/0C4j/+1/8WCKX6hl7/7Y1sTY/BNLfchjBfo9TH4wmaUE56HnarhX2HkaCo2Z1inIcXVW6RSKS5YJ+Nv74erzDylLvkvyZYBNazbNWFNBRx5cufD80JSUvIhfTbMSZsoYgGoIOuonBwn+fdQ2PT7ygjkjRNn0qcXxqG9IVh+2vl3PAHUyAQ7t2fdi/Ovk37VWz47l+j89quPmjQrinVhiZewM+pyTXp0MFReQ+llixEe0LJPakUFnmPaJnziWLG5SjGliZa3n8q6yMXpWMYSBFYmU7Pz23EHocSXwUVKpxtn7lj59vhcEI+sgXUaKxZqWecYgilHe7cZoPKPw2uipfQIGBSBT3gehYzZg04quucl3SsXMJ0Pk0dD8gw3+GdIRZF/hIHDP1nOQCxfufAivcnC97e0pftOJ/pkofGHsmwcsO489T+NHezrRu6JxxSOHcEEA27T2y883MWKX7siIknVbuRvRSY4FaeELgXKRRiU7zkfskFt1IOpqASYOnmhMHwXNOlWjqZK6jut6aCCQSWtfuZzWfO7//OkHOykdpcOQ84xTaCiCBvMcEJevuldWtHf6mP/sDoYFZzqlgwn42Eqg9aPauoD+V5MBPvs55SzVkoRwH8Gl4P//mgoeo4eEtmjvtBPDuDwL+ZsF9Y6p7M0S2i//6RT6jU1Bf10JnW6IHmyYMvK9KJSK4V5QDFOHUr7go85I6rPTwytwvsbYPQpoJYC/8BqkrMWK+CLACTnYO8wqZ8pvAn+0sD2KBNb7VsnWDLOxF+NmeHgtcWF+mDl8PzNrXlxOvETg2GI23azEqNBP+vGkUx8m6cavw6Ql46DuI0an4jG4Ml2Yh97j3chb4W8Lf9Iaql1GDv8WmN7++1xop3ukCjB98179suEfqogBp+MS5E0iXNsj2lNQZs2aosiFBkf/+qdDyaWCpcySAa67Oi+21jRXu8qlAs/npNIha3PgUkJP9XhTGMjYZcik/mjwbl5RizPTM61ufgBl/46AJZ5KXwsR8JfzP332hrbRPPW5nAUZ4oDzghdb/dCZrZcxzH5TXm7Rn9tGNLr6EloVS7vD3WHsVvI2UTX5PkFzocuu6hcjN5G/ca7FwiUeM4xSdFD51Djf0lSY7WAWalJytDK4WlfBFKb+7R6BgIKt0XeVvoap9Rw4Er9jeSBJxNnDl+/U5cvx5J7beYUsf3jFSYQOUkpdWuWBv9vPwsc7nSpGAPAiBI+JfkfqblRP0g4GTVUZ9BMD8b7oEtC8I/y5/P3LfHo+hYhuN9DWFqMPrE+KyiKMKTWjidqf/r8MoJ7KtDw/lv+xHcGFvbIEbkFhL7MnSQYKnEO7Ga90+zqoXNY29VEAqfnDLZKSBS2XXapo/7JVcripNxrisDUTMnL1oS+Odw4r/mfOtK4Tpq0R6IykJhzHKQPYWv/HkurmKDzHmnFwLwcg5+3woATV+vpc+vjT3crYCNTiCLS1vIyL76Mg7AdR+8Dh4ia2oUGpjk/e2PjQyu5sxn+iqTtUriWCgRTISoSyZgGpnZRVTO7hBvPjoAnPbfrRajlvKudUvgl1wjfxPTuUJFme9xdyEf6lZNv/ViM3y0YtS9g1seoxhJ+ta+EEgpYZCwLZV5gBxXvytNFKbOPJCF+T1OQKCj9BYcjcFBhg0HsphPtqLNUBQFSgAxTUmyJer6QvyuxP05vu5oM2pzQXy9oD+c4WNgNNk4iZl0Q1ZLkWTDChBhT0rMFqJAq7uYzkBcSWtN94vtQezrx50YRe1DzhP8IBmflkt293zdYv2FU2ffXu4gP2sCpEvQ51s/Yi3MZbms+XZ48mqhwmxAppG5PB5MSnIoZ8BwkmxRK9gpJHvUUIBH+ywceeGtYFYOZ52NQlstCGUJAr9f6KS57FQ6h9jTj6UkwtNErsAknCHWhO0UklWNIxFJ8HiEJdchtdSRDWKJx0eQvDpAfbIkVtl48GZQAAAA==','',''], desc:'CHMB series B'},
+
+];
+
+
+// Load products from localStorage or initialize
+function loadProducts(){
+  const stored=localStorage.getItem('productsImages');
+  if(stored){
+    try{
+      const imgData=JSON.parse(stored);
+      allProducts=[...productsA,...productsB,...productsC,...productsCHMB];
+      allProducts.forEach(p=>{
+        const saved=imgData[p.id];
+        if(saved) p.images=saved;
+      });
+    }catch(e){}
+  }
+  allProducts=[...productsA,...productsB,...productsC,...productsCHMB];
+}
+
+function saveProducts(){
+  const imgData={};
+  allProducts.forEach(p=>{
+    imgData[p.id]=p.images;
+  });
+  localStorage.setItem('productsImages',JSON.stringify(imgData));
+}
+
+function openAdmin(){
+  const adminBtn=document.getElementById('adminBtn');
+  if(!adminBtn.style.display || adminBtn.style.display==='none'){
+    alert('Hanya admin yang bisa akses');
+    return;
+  }
+  document.getElementById('adminPanel').classList.add('active');
+  renderAdmin();
+}
+
+function closeAdmin(){
+  document.getElementById('adminPanel').classList.remove('active');
+}
+
+function renderAdmin(){
+  const container=document.getElementById('adminContainer');
+  allProducts=[...productsA,...productsB,...productsC,...productsCHMB];
+  
+  container.innerHTML=allProducts.map(p=>`
+    <div class="product-form">
+      <h3>${p.name}</h3>
+      <label>Gambar 1 (gambar utama):</label>
+      <input type="text" value="${p.images[0]||''}" placeholder="URL gambar 1" id="img_${p.id}_1">
+      
+      <label>Gambar 2:</label>
+      <input type="text" value="${p.images[1]||''}" placeholder="URL gambar 2" id="img_${p.id}_2">
+      
+      <label>Gambar 3:</label>
+      <input type="text" value="${p.images[2]||''}" placeholder="URL gambar 3" id="img_${p.id}_3">
+      
+      <button onclick="saveProductImages(${p.id})">Simpan Gambar</button>
+    </div>
+  `).join('');
+}
+
+function saveProductImages(productId){
+  const img1=document.getElementById(`img_${productId}_1`).value.trim();
+  const img2=document.getElementById(`img_${productId}_2`).value.trim();
+  const img3=document.getElementById(`img_${productId}_3`).value.trim();
+  
+  const product=allProducts.find(p=>p.id===productId);
+  if(product){
+    product.images=[img1,img2,img3];
+    saveProducts();
+    alert('Gambar produk berhasil disimpan!');
+  }
+}
+
+let cart=[],current=null,currentSlide=0;
+let currentUser=null;
+let orders=JSON.parse(localStorage.getItem('orders')) || [];
+let users=JSON.parse(localStorage.getItem('users')) || [];
+
+const cartEl=document.getElementById('cart');
+const cartItems=document.getElementById('cartItems');
+const cartCount=document.getElementById('cartCount');
+const totalEl=document.getElementById('total');
+const carousel=document.getElementById('carousel');
+const carouselContainer=document.getElementById('carouselContainer');
+const dots=document.querySelectorAll('.carousel-dot');
+
+// Load user from localStorage
+function loadUser(){
+  loadProducts(); // load products first
+  
+  // Initialize admin account jika belum ada
+  if(!users.find(u=>u.email==='admin@fyrenstore.com')){
+    const adminUser={id:1,name:'Admin FYREN',email:'admin@fyrenstore.com',password:'admin123',address:{}};
+    users.push(adminUser);
+    localStorage.setItem('users',JSON.stringify(users));
+  }
+  
+  const stored=localStorage.getItem('currentUser');
+  if(stored){
+    try{currentUser=JSON.parse(stored);}catch(e){}
+    updateUserDisplay();
+    loadAddressToCart(); // load user's saved address
+  }
+  
+  // Show admin button untuk admin
+  if(currentUser && currentUser.email==='admin@fyrenstore.com'){
+    document.getElementById('adminBtn').style.display='flex';
+  }
+}
+
+function updateUserDisplay(){
+  const userDisplay=document.getElementById('userDisplay');
+  const ordersCountEl=document.getElementById('ordersCount');
+  if(currentUser){
+    userDisplay.innerText=currentUser.name.split(' ')[0];
+    const userOrders=orders.filter(o=>o.userId===currentUser.id);
+    ordersCountEl.innerText=userOrders.length;
+  } else {
+    userDisplay.innerText='Login';
+    ordersCountEl.innerText='0';
+  }
+}
+
+function openAuth(){
+  document.getElementById('authModal').classList.add('active');
+}
+function closeAuth(){
+  document.getElementById('authModal').classList.remove('active');
+}
+function switchToRegister(){
+  document.getElementById('loginForm').style.display='none';
+  document.getElementById('registerForm').style.display='block';
+}
+function switchToLogin(){
+  document.getElementById('loginForm').style.display='block';
+  document.getElementById('registerForm').style.display='none';
+}
+
+function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value.trim();
+  if(!email||!pass){alert('Email dan password harus diisi');return;}
+  
+  const user=users.find(u=>u.email===email&&u.password===pass);
+  if(!user){alert('Email atau password salah');return;}
+  
+  currentUser=user;
+  localStorage.setItem('currentUser',JSON.stringify(user));
+  updateUserDisplay();
+  loadAddressToCart();
+  closeAuth();
+  document.getElementById('loginEmail').value='';
+  document.getElementById('loginPassword').value='';
+  alert('Login berhasil!');
+}
+
+function handleRegister(){
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const pass=document.getElementById('regPassword').value.trim();
+  const pass2=document.getElementById('regPassword2').value.trim();
+  
+  if(!name||!email||!pass||!pass2){alert('Semua field harus diisi');return;}
+  if(pass!==pass2){alert('Password tidak cocok');return;}
+  if(users.find(u=>u.email===email)){alert('Email sudah terdaftar');return;}
+  
+  const newUser={id:Date.now(),name,email,password:pass,address:{}};
+  users.push(newUser);
+  localStorage.setItem('users',JSON.stringify(users));
+  
+  currentUser=newUser;
+  localStorage.setItem('currentUser',JSON.stringify(newUser));
+  updateUserDisplay();
+  loadAddressToCart();
+  closeAuth();
+  alert('Register berhasil! Anda sudah login');
+  document.getElementById('regName').value='';
+  document.getElementById('regEmail').value='';
+  document.getElementById('regPassword').value='';
+  document.getElementById('regPassword2').value='';
+}
+
+function toggleUserMenu(){
+  if(currentUser){
+    if(confirm('Logout?')){
+      currentUser=null;
+      localStorage.removeItem('currentUser');
+      updateUserDisplay();
+    }
+  } else {
+    openAuth();
+  }
+}
+
+function checkLoginOrders(){
+  if(!currentUser){
+    alert('Silakan login terlebih dahulu');
+    openAuth();
+    return;
+  }
+  showOrders();
+}
+
+function showOrders(){
+  const ordersPage=document.getElementById('ordersPage');
+  const container=document.getElementById('ordersContainer');
+  
+  if(!currentUser){alert('Tidak ada user yang login');return;}
+  
+  const userOrders=orders.filter(o=>o.userId===currentUser.id).sort((a,b)=>b.createdAt-a.createdAt);
+  
+  if(userOrders.length===0){
+    container.innerHTML='<p style="text-align:center;color:#999">Tidak ada pesanan</p>';
+  } else {
+    container.innerHTML=userOrders.map(o=>`
+      <div class="order-card">
+        <div class="order-id">Order ID: ${o.id}</div>
+        <div class="order-date">Tgl: ${new Date(o.createdAt).toLocaleString('id-ID')}</div>
+        
+        <div class="order-status">${o.currentStatus}</div>
+        ${o.nextStatusTime?'<div class="order-timer">Perubahan status dalam '+Math.ceil((o.nextStatusTime-Date.now())/1000)+'s</div>':''}
+        
+        <div style="margin:12px 0">
+          <b>Pesanan:</b>
+          ${o.items.map(i=>{
+            const product=allProducts.find(p=>p.id===i.id);
+            const img=product?product.img:'img/placeholder.jpg';
+            return`
+            <div class="order-items-img">
+              <img src="${img}" class="order-item-thumb" alt="${i.name}">
+              <div class="order-item-info">
+                <b>${i.name}</b>
+                <small>${i.size?i.size+' / ':''}${i.color?i.color:''}</small>
+                <em>${i.qty}x Rp ${i.price.toLocaleString('id-ID')}</em>
+              </div>
+            </div>
+          `}).join('')}
+        </div>
+        <div style="font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid #eee">
+          <b>Alamat:</b><br>
+          ${o.address.fullName}<br>
+          ${o.address.street}, No. ${o.address.houseNo}<br>
+          ${o.address.district}, ${o.address.city}<br>
+          ${o.address.province} ${o.address.postalCode}<br>
+          ${o.address.details?'Catatan: '+o.address.details:''}
+        </div>
+        
+        ${o.statusIndex<statusProgression.length-1?`<div class="order-completion-info">ⓘ Klik "Pesanan Selesai" jika paket Anda sudah datang</div><button onclick="markOrderComplete('${o.id}')" style="width:100%;padding:10px;margin-top:12px;background:#27ae60;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Pesanan Selesai</button>`:'<div style="text-align:center;padding:10px;background:#27ae60;color:#fff;border-radius:6px;margin-top:12px;font-weight:700">✓ Pesanan Diterima</div>'}
+      </div>
+    `).join('');
+    
+    // Add back button after orders list
+    container.innerHTML += `<button class="order-close-btn" onclick="closeOrders()">← Kembali ke Halaman Utama</button>`;
+  }
+  
+  ordersPage.classList.add('active');
+}
+
+function closeOrders(){
+  document.getElementById('ordersPage').classList.remove('active');
+}
+
+function markOrderComplete(orderId){
+  const order=orders.find(o=>o.id===orderId);
+  if(order){
+    order.statusIndex=statusProgression.length-1;
+    order.currentStatus='pesanan sudah di terima';
+    order.nextStatusTime=null;
+    localStorage.setItem('orders',JSON.stringify(orders));
+    showOrders(); // refresh the display
+    alert('Status pesanan berhasil diperbarui menjadi "pesanan sudah di terima"');
+  }
+}
+
+const statusProgression=[
+  'Pengirim mengatur pengiriman, Menunggu paket diserahkan pihak jasa kirim.',
+  'Pesanan tiba di lokasi transit Kab. Ponorogo',
+  'Paket sedang dalam perjalanan ke lokasi Anda',
+  'Pesanan sudah sampai di kurir terdekat',
+  'Pesanan sedang diantar ke rumah Anda'
+];
+const statusTime=4*60*60*1000; // 4 jam
+
+function updateOrderStatus(){
+  orders.forEach(o=>{
+    if(o.statusIndex<statusProgression.length-1&&Date.now()>=o.nextStatusTime){
+      o.statusIndex++;
+      o.currentStatus=statusProgression[o.statusIndex];
+      o.nextStatusTime=Date.now()+statusTime;
+    }
+  });
+  localStorage.setItem('orders',JSON.stringify(orders));
+}
+
+// Update status setiap 10 detik
+setInterval(updateOrderStatus,10000);
+
+function rupiah(n){return 'Rp '+n.toLocaleString('id-ID')}
+
+function render(list,el){
+el.innerHTML='';
+list.forEach(p=>{
+el.innerHTML+=`
+<div class="product" onclick="openDetail(${p.id})">
+<img src="${p.img}">
+<b>${p.name}</b>
+<div class="price">${rupiah(p.price)}</div>
+</div>`;
+});
+}
+render(productsA,document.getElementById('productsA'));
+render(productsB,document.getElementById('productsB'));
+render(productsC,document.getElementById('productsC'));
+render(productsCHMB,document.getElementById('productsCHMB'));
+
+function openDetail(id){
+  current=allProducts.find(p=>p.id===id);
+  if(!current) return;
+  
+  currentSlide=0;
+  updateCarousel();
+  
+  dName.innerText=current.name;
+  dPrice.innerText=rupiah(current.price);
+  dDesc.innerText=current.desc;
+  detailModal.classList.add('active');
+}
+
+function updateCarousel(){
+  if(!current || !current.images) return;
+  
+  const slides=['slide1','slide2','slide3'];
+  for(let i=0;i<3;i++){
+    const img=document.getElementById(slides[i]);
+    img.src=current.images[i] || current.img;
+  }
+  
+  carousel.style.transform=`translateX(${-currentSlide*100}%)`;
+  
+  dots.forEach((d,i)=>{
+    d.classList.toggle('active',i===currentSlide);
+  });
+}
+
+function nextSlide(){
+  currentSlide=(currentSlide+1)%3;
+  updateCarousel();
+}
+
+function prevSlide(){
+  currentSlide=(currentSlide-1+3)%3;
+  updateCarousel();
+}
+
+function goToSlide(n){
+  currentSlide=n;
+  updateCarousel();
+}
+
+// Touch/Swipe support
+let touchStartX=0,touchEndX=0;
+carouselContainer.addEventListener('touchstart',e=>{
+  touchStartX=e.changedTouches[0].screenX;
+});
+
+carouselContainer.addEventListener('touchend',e=>{
+  touchEndX=e.changedTouches[0].screenX;
+  if(touchStartX-touchEndX>50) nextSlide();
+  if(touchEndX-touchStartX>50) prevSlide();
+});
+
+// Prevent default touch scrolling on carousel to enable custom swipe
+carouselContainer.addEventListener('touchmove',e=>{
+  // Allow normal scroll if not swiping horizontally
+  const deltaX=Math.abs(e.touches[0].clientX-touchStartX);
+  const deltaY=Math.abs(e.touches[0].clientY-touchStartX);
+  if(deltaX>deltaY){
+    // Horizontal swipe - prevent default
+    // But let the carousel handle it
+  }
+},{passive:true});
+
+function closeDetail(){detailModal.classList.remove('active')}
+
+document.addEventListener('click',e=>{
+if(e.target.classList.contains('option-box')){
+[...e.target.parentNode.children].forEach(o=>o.classList.remove('active'));
+e.target.classList.add('active');
+}
+});
+
+function addToCart(){
+  if(!currentUser){
+    alert('Silakan login terlebih dahulu untuk memesan');
+    openAuth();
+    return;
+  }
+
+  // read selected size and color from modal
+  let size = '';
+  let color = '';
+  try{
+    const groups = detailModal.querySelectorAll('.option-group');
+    if(groups && groups.length>0){
+      const s = groups[0].querySelector('.option-box.active');
+      const c = groups[1].querySelector('.option-box.active');
+      if(s) size = s.innerText.trim();
+      if(c) color = c.innerText.trim();
+    }
+  }catch(e){/* ignore */}
+
+  // merge same product with same options
+  let ex = cart.find(i=>i.id===current.id && i.size===size && i.color===color);
+  if(ex) ex.qty++;
+  else cart.push({...current,qty:1,size,color});
+  
+  updateCart();
+  closeDetail();
+  alert('Produk ditambahkan ke keranjang');
+}
+
+function updateCart(){
+cartItems.innerHTML='';
+let total=0,count=0;
+cart.forEach((i,idx)=>{
+total+=i.price*i.qty;
+count+=i.qty;
+    cartItems.innerHTML+=`
+<div class="cart-item">
+<img src="${i.img}">
+<div>
+<b>${i.name}</b><br><small>${i.size?i.size+" / ":""}${i.color?i.color:""}</small><br>${rupiah(i.price*i.qty)}
+<div class="qty">
+<button onclick="changeQty(${idx},-1)">-</button>
+<span>${i.qty}</span>
+<button onclick="changeQty(${idx},1)">+</button>
+<button class="remove" onclick="removeItem(${idx})">hapus</button>
+</div>
+</div>
+</div>`;
+});
+totalEl.innerText=rupiah(total);
+cartCount.innerText=count;
+}
+
+function changeQty(i,v){
+cart[i].qty+=v;
+if(cart[i].qty<=0)cart.splice(i,1);
+updateCart();
+}
+function removeItem(i){cart.splice(i,1);updateCart()}
+function toggleCart(){cartEl.classList.toggle('active')}
+
+function toggleCategory(){
+document.getElementById('catMenu').classList.toggle('active');
+}
+
+function goCat(id){
+document.getElementById('catMenu').classList.remove('active');
+document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+function openAddressModal(){
+  if(!currentUser){
+    alert('Silakan login terlebih dahulu');
+    openAuth();
+    return;
+  }
+  const addr=currentUser.address||{};
+  document.getElementById('addrFullName').value=addr.fullName||'';
+  document.getElementById('addrProvince').value=addr.province||'';
+  document.getElementById('addrCity').value=addr.city||'';
+  document.getElementById('addrDistrict').value=addr.district||'';
+  document.getElementById('addrPostalCode').value=addr.postalCode||'';
+  document.getElementById('addrStreet').value=addr.street||'';
+  document.getElementById('addrHouseNo').value=addr.houseNo||'';
+  document.getElementById('addrDetails').value=addr.details||'';
+  document.getElementById('addressModal').classList.add('active');
+}
+
+function closeAddressModal(){
+  document.getElementById('addressModal').classList.remove('active');
+}
+
+function saveAddressToAccount(){
+  if(!currentUser){return;}
+  const fullName=document.getElementById('addrFullName').value.trim();
+  const province=document.getElementById('addrProvince').value.trim();
+  const city=document.getElementById('addrCity').value.trim();
+  const district=document.getElementById('addrDistrict').value.trim();
+  const postalCode=document.getElementById('addrPostalCode').value.trim();
+  const street=document.getElementById('addrStreet').value.trim();
+  const houseNo=document.getElementById('addrHouseNo').value.trim();
+  const details=document.getElementById('addrDetails').value.trim();
+  
+  if(!fullName||!province||!city||!district||!postalCode||!street||!houseNo){
+    alert('Mohon lengkapi semua field alamat');
+    return;
+  }
+  
+  currentUser.address={fullName,province,city,district,postalCode,street,houseNo,details};
+  
+  // Update address in users array - find by email instead of id for reliability
+  let userFound = false;
+  for(let i=0; i<users.length; i++){
+    if(users[i].email === currentUser.email){
+      users[i].address = currentUser.address;
+      userFound = true;
+      break;
+    }
+  }
+  
+  // If user not found in array, add them
+  if(!userFound){
+    const existingIndex = users.findIndex(u => u.id === currentUser.id);
+    if(existingIndex >= 0){
+      users[existingIndex].address = currentUser.address;
+    } else {
+      users.push(currentUser);
+    }
+  }
+  
+  localStorage.setItem('users',JSON.stringify(users));
+  localStorage.setItem('currentUser',JSON.stringify(currentUser));
+  loadAddressToCart();
+  closeAddressModal();
+  alert('Alamat berhasil disimpan!');
+}
+
+function loadAddressToCart(){
+  const addressDisplay=document.getElementById('addressDisplay');
+  const addressText=document.getElementById('addressText');
+  const addAddressBtn=document.getElementById('addAddressBtn');
+  
+  if(!currentUser || !currentUser.address || !currentUser.address.fullName){
+    addressDisplay.style.display='none';
+    addAddressBtn.style.display='block';
+    return;
+  }
+  
+  const addr=currentUser.address;
+  addressText.innerHTML=`
+    <strong>${addr.fullName}</strong><br>
+    ${addr.street}, No. ${addr.houseNo}<br>
+    ${addr.district}, ${addr.city}<br>
+    ${addr.province} ${addr.postalCode}
+    ${addr.details?'<br>Catatan: '+addr.details:''}
+  `;
+  addressDisplay.style.display='block';
+  addAddressBtn.style.display='none';
+}
+
+function checkoutWA(){
+  if(!currentUser){
+    alert('Silakan login terlebih dahulu');
+    openAuth();
+    return;
+  }
+
+  if(cart.length===0){
+    alert('Keranjang kosong');
+    return;
+  }
+
+  // get address from currentUser
+  if(!currentUser || !currentUser.address){
+    alert('Silakan masukkan alamat pengiriman terlebih dahulu');
+    return;
+  }
+
+  const addr=currentUser.address;
+  const fullName=addr.fullName;
+  const province=addr.province;
+  const city=addr.city;
+  const district=addr.district;
+  const postalCode=addr.postalCode;
+  const street=addr.street;
+  const houseNo=addr.houseNo;
+  const details=addr.details;
+
+  if(!fullName||!province||!city||!district||!postalCode||!street||!houseNo){
+    alert('Semua field alamat harus diisi');
+    return;
+  }
+
+  const address={fullName,province,city,district,postalCode,street,houseNo,details};
+  const paymentEl = document.getElementById('paymentMethod');
+  const shippingEl = document.getElementById('shippingMethod');
+
+  // build professional nota (receipt)
+  const now = new Date();
+  const dateStr = now.toLocaleString('id-ID');
+  const orderId = 'FYR' + now.getTime();
+
+  let subtotal = 0;
+  let lines = '';
+  
+  cart.forEach((i, idx) => {
+    const itemTotal = i.price * i.qty;
+    subtotal += itemTotal;
+    const opt = ` ${i.size?('('+i.size+(i.color?'/'+i.color:'')+')'): (i.color?('('+i.color+')'):'')}`;
+    lines += `${idx+1}. ${i.name}${opt} - ${i.qty} x Rp ${i.price.toLocaleString('id-ID')} = Rp ${itemTotal.toLocaleString('id-ID')}\n`;
+    if(i.img){
+      lines += `gambar ${i.img}\n`;
+    }
+  });
+
+  const total = subtotal;
+  const paymentText = paymentEl ? paymentEl.value.trim() : '';
+  const shippingText = shippingEl ? shippingEl.value.trim() : '';
+
+  let msg = `FYRENSTORE - NOTA PEMBELIAN\n`;
+  msg += `Order ID: ${orderId}\n`;
+  msg += `Tanggal: ${dateStr}\n`;
+  msg += `Pembeli: ${currentUser.name}\n\n`;
+  msg += `ITEMS:\n${lines}\n`;
+  msg += `Subtotal: Rp ${subtotal.toLocaleString('id-ID')}\n`;
+  msg += `Total: Rp ${total.toLocaleString('id-ID')}\n\n`;
+  
+  // determine payment status (example: BCA => Lunas)
+  let paymentStatus = 'Menunggu Konfirmasi';
+  if(paymentText && paymentText.toUpperCase().includes('BCA')) paymentStatus = 'Lunas';
+
+  msg += `PEMBAYARAN:\n${paymentText}\nStatus: ${paymentStatus}\n\n`;
+  msg += `PENGIRIMAN: ${shippingText}\n\n`;
+  
+  if(address){
+    msg += `ALAMAT PENGIRIMAN:\n`;
+    msg += `${address.fullName}\n`;
+    msg += `${address.street}, No. ${address.houseNo}\n`;
+    msg += `${address.district}, ${address.city}\n`;
+    msg += `${address.province} ${address.postalCode}\n`;
+    if(address.details) msg += `Detail: ${address.details}\n`;
+    msg += `\n`;
+  }
+  
+  msg += `Terima kasih atas pesanan Anda!`;
+
+  // Save order with tracking
+  const newOrder={
+    id:orderId,
+    userId:currentUser.id,
+    items:cart.map(i=>({id:i.id,name:i.name,qty:i.qty,price:i.price,size:i.size,color:i.color})),
+    address:address||{},
+    total:total,
+    payment:paymentText,
+    shipping:shippingText,
+    createdAt:now.getTime(),
+    statusIndex:0,
+    currentStatus:statusProgression[0],
+    nextStatusTime:Date.now()+statusTime
+  };
+  
+  orders.push(newOrder);
+  localStorage.setItem('orders',JSON.stringify(orders));
+  updateUserDisplay();
+
+  const encoded = encodeURIComponent(msg);
+  const waUrl = 'https://wa.me/62881027702971?text='+encoded;
+  window.open(waUrl);
+  
+  // Clear cart and close panel
+  cart=[];
+  updateCart();
+  toggleCart();
+  alert('Pesanan berhasil dikirim ke WhatsApp!');
+}
+
+// Load user on page load
+loadUser();
+
+// set footer year
+try{ document.getElementById('year').innerText = new Date().getFullYear(); }catch(e){}
+</script>
+
+</body>
+</html>
